@@ -1,0 +1,42 @@
+{% extends "base.html" %} {% block content %}
+
+<div>
+    <form id="username-form" method="post">
+        <input type="text" name="username" id="username" class="form-control" placeholder="Enter Instagram username">
+        <button type="button" class="btn btn-primary btn-lg " id="btn-predict">Predict!</button>
+    </form>
+    <div class="spinner-container">
+        <div style="display: none;" class="loader"></div>
+    </div>
+
+    <div id="result">
+        <h3>User is <b class="prediction-result"></b></h3>
+        <div class="text-result">
+            <div class="text-result-container">
+                <p class="text-title">Username: <b class="username-value"></b></p>
+                <div class="text-pred-container">
+                    <p>M: <b class="username-m"></b></p>
+                    <p>F: <b class="username-f"></b></p>
+                </div>
+
+            </div>
+            <div class="text-result-container">
+                <p class="text-title">Full name: <b class="fullname-value"></b></p>
+                <div class="text-pred-container">
+                    <p>M: <b class="fullname-m"></b></p>
+                    <p>F: <b class="fullname-f"></b></p>
+                </div>
+            </div>
+        </div>
+         <div class="image-result">
+             <div class="avatar-result-container">
+                <img src="" class="image-prediction-result avatar" />
+                <p>M: <b class="avatar-m"></b></p>
+                <p>F: <b class="avatar-f"></b></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
