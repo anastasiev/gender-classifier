@@ -1,6 +1,7 @@
 import requests
 import re
 import json
+import numpy as np
 
 import io
 from PIL import Image
@@ -65,3 +66,43 @@ def get_image(url):
     image_content = response.content
     image = Image.open(io.BytesIO(image_content))
     return image
+
+
+vowels = [ord('a'),ord('e'),ord('y'),ord('u'),ord('i'),ord('o')]
+
+
+def get_name_features(name):
+    arr = np.zeros(52+26*26+4)
+
+    # Iterate each character
+    for ind, x in enumerate(name):
+       arr[x-ord('a')] += 1
+       arr[x-ord('a')+26] += ind+1
+       # Vowels
+       if x in vowels:
+        arr[-1] += 1
+    # Iterate every 2 characters
+    for x in range(len(name)-1):
+       ind = (name[x]-ord('a') + 2)*26 + (name[x+1]-ord('a'))
+       arr[ind] += 1
+    arr[-4] = name[-1] - ord('a')
+    # Second Last character
+    arr[-3] = name[-2] - ord('a')
+    # Length of name
+    arr[-2] = len(name)
+    return np.array([arr])
+
+
+def prepare_username(username):
+    usernames = re.findall(r'[a-zA-Z]+', username.lower())
+    if len(usernames) == 2:
+        return usernames[0]
+    return ''.join(usernames)
+
+
+def prepare_fullname(fullname):
+    first_name = fullname.split(' ')[0]
+    if len(first_name) == 0:
+        return ""
+    clear_first_name = re.findall(r'[a-z]+', first_name.lower())
+    return "" if len(clear_first_name) == 0 else clear_first_name[0]

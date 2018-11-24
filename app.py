@@ -3,6 +3,8 @@ from os.path import join
 from flask import Flask, request, render_template
 from gevent.pywsgi import WSGIServer
 
+from keras.models import load_model
+
 import json
 
 from src.helpers import get_model, fetch_user
@@ -12,12 +14,15 @@ print('Instagram user gender recognition app')
 
 test_user = 'dmytro.anastasiev'
 image_model_weights = '/Users/danastasiev/Diploma/my_models/saved_models/mobile_last_dense_retrain.h5'
+text_model_weights = '/Users/danastasiev/Diploma/text_recognition/frequency_order_2grams_heuristics_vowels_full_4086_to_32.h5'
 img_width, img_height = 256, 256
 
 print('Getting model...')
 image_model = get_model(image_model_weights, img_width, img_height)
 image_model._make_predict_function()
-classifier = GenderClassifier(image_model, (img_width, img_height))
+text_model = load_model(text_model_weights)
+text_model._make_predict_function()
+classifier = GenderClassifier(image_model, (img_width, img_height), text_model)
 
 
 # Define a flask app
